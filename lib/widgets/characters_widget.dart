@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:encyclopedia_star_wars/models/character_model.dart';
 import 'package:encyclopedia_star_wars/models/request_model.dart';
+import 'package:encyclopedia_star_wars/screen_widgets/character_details_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -63,8 +64,66 @@ class StateCharactersWidget extends State<CharactersWidget> {
                   listCharacterModel.add(CharacterModel.fromJson(element));
                 }
                 return ListView.builder(
-                  itemBuilder: (context, index) => Text(
-                      '${listCharacterModel[index].name}\n        ${listCharacterModel[index].birthYear}'),
+                  itemBuilder: (context, index) => Container(
+                    padding: const EdgeInsets.all(15),
+                    child: GestureDetector(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.white.withOpacity(0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Hero(
+                                tag: '${listCharacterModel[index].name} img',
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10)),
+                                  child: Container(
+                                    height: 60,
+                                    width: 60,
+                                    decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(10)),
+                                        border: Border.all(
+                                            width: 1, color: Colors.blue)),
+                                    child: const Icon(
+                                      Icons.person,
+                                      size: 60,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                )),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      left: 10, right: 15, top: 2),
+                                  child: Text(
+                                      'Name: ${listCharacterModel[index].name}',
+                                      overflow: TextOverflow.ellipsis),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      left: 10, right: 15, top: 2),
+                                  child: Text(
+                                      'Birth Year: ${listCharacterModel[index].birthYear}',
+                                      overflow: TextOverflow.ellipsis),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CharacterDetailsWidget(
+                                characterModel: listCharacterModel[index]),
+                          )),
+                    ),
+                  ),
                   itemCount: listCharacterModel.length,
                 );
               } else if (snapshot.hasError) {

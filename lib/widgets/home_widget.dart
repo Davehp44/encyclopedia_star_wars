@@ -39,7 +39,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   GestureDetector(
                     child: Container(
                       padding: const EdgeInsets.all(20),
-                      child: Text(planets),
+                      child: const Text(planets),
                     ),
                     onTap: () {
                       stateApp.value = StateApp.planets;
@@ -50,7 +50,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   GestureDetector(
                     child: Container(
                       padding: const EdgeInsets.all(20),
-                      child: Text(vehicles),
+                      child: const Text(vehicles),
                     ),
                     onTap: () {
                       stateApp.value = StateApp.vehicles;
@@ -61,7 +61,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   GestureDetector(
                     child: Container(
                       padding: const EdgeInsets.all(20),
-                      child: Text(starships),
+                      child: const Text(starships),
                     ),
                     onTap: () {
                       stateApp.value = StateApp.starships;
@@ -72,7 +72,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   GestureDetector(
                     child: Container(
                       padding: const EdgeInsets.all(20),
-                      child: Text(films),
+                      child: const Text(films),
                     ),
                     onTap: () {
                       stateApp.value = StateApp.films;
@@ -97,41 +97,43 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+        bottom: false,
         child: Scaffold(
-      appBar: AppBar(
-        title: ValueListenableBuilder(
-          valueListenable: stateApp,
-          builder: (context, value, child) =>
-              Text(stateApp.value == StateApp.characters
-                  ? characters
-                  : stateApp.value == StateApp.vehicles
-                      ? vehicles
-                      : stateApp.value == StateApp.planets
-                          ? planets
-                          : stateApp.value == StateApp.species
-                              ? species
-                              : stateApp.value == StateApp.starships
-                                  ? starships
-                                  : stateApp.value == StateApp.films
-                                      ? films
-                                      : ""),
-        ),
-      ),
-      bottomNavigationBar: _buildBottomBar(),
-      body: stateApp.value == StateApp.characters
-          ? charactersWidget
-          : stateApp.value == StateApp.vehicles
-              ? const VehiclesWidget()
-              : stateApp.value == StateApp.planets
-                  ? const PlanetWidget()
-                  : stateApp.value == StateApp.species
-                      ? const SpeciesWidget()
-                      : stateApp.value == StateApp.starships
-                          ? const StarShipsWidget()
-                          : stateApp.value == StateApp.films
-                              ? const FilmsWidget()
-                              : Container(),
-    ));
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            title: ValueListenableBuilder(
+              valueListenable: stateApp,
+              builder: (context, value, child) =>
+                  Text(stateApp.value == StateApp.characters
+                      ? characters
+                      : stateApp.value == StateApp.vehicles
+                          ? vehicles
+                          : stateApp.value == StateApp.planets
+                              ? planets
+                              : stateApp.value == StateApp.species
+                                  ? species
+                                  : stateApp.value == StateApp.starships
+                                      ? starships
+                                      : stateApp.value == StateApp.films
+                                          ? films
+                                          : ""),
+            ),
+          ),
+          bottomNavigationBar: _buildBottomBar(),
+          body: stateApp.value == StateApp.characters
+              ? charactersWidget
+              : stateApp.value == StateApp.vehicles
+                  ? const VehiclesWidget()
+                  : stateApp.value == StateApp.planets
+                      ? const PlanetWidget()
+                      : stateApp.value == StateApp.species
+                          ? const SpeciesWidget()
+                          : stateApp.value == StateApp.starships
+                              ? const StarShipsWidget()
+                              : stateApp.value == StateApp.films
+                                  ? const FilmsWidget()
+                                  : Container(),
+        ));
   }
 
   final _inactiveColor = Colors.grey;
