@@ -1,5 +1,5 @@
 class FilmModel {
-  final String id;
+  String id;
   final String title;
   final int episodeId;
   final String openingCrawl;
@@ -41,11 +41,11 @@ class FilmModel {
       'director': director,
       'producer': producer,
       'release_date': releaseDate,
-      'characters': characters,
-      'planets': planets,
-      'species': species,
-      'vehicles': vehicles,
-      'starships': starships,
+      // 'characters': characters,
+      // 'planets': planets,
+      // 'species': species,
+      // 'vehicles': vehicles,
+      // 'starships': starships,
       'created': created,
       'edited': edited,
       'url': url,

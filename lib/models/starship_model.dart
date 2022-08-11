@@ -1,5 +1,5 @@
 class StarshipsModel {
-  final String id;
+  String id;
   final String name;
   final String model;
   final String manufacturer;
@@ -56,8 +56,8 @@ class StarshipsModel {
       'hyperdrive_rating': hyperDriveRating,
       'MGLT': MGLT,
       'starship_class': starshipClass,
-      'pilots': pilots,
-      'films': films,
+      // 'pilots': pilots,
+      // 'films': films,
       'created': created,
       'edited': edited,
       'url': url,

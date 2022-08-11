@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/encyclopedia_star_wars.iml" filepath="$PROJECT_DIR$/encyclopedia_star_wars.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/encyclopedia_star_wars_android.iml" filepath="$PROJECT_DIR$/android/encyclopedia_star_wars_android.iml" />
     </modules>
   </component>
 </project>

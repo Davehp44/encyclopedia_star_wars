@@ -1,11 +1,11 @@
 import 'package:encyclopedia_star_wars/constants/stringValues.dart';
-import 'package:encyclopedia_star_wars/models/character_model.dart';
+import 'package:encyclopedia_star_wars/models/specie_model.dart';
 import 'package:flutter/material.dart';
 
-class CharacterDetailsWidget extends StatelessWidget {
-  final CharacterModel characterModel;
+class SpecieDetailsWidget extends StatelessWidget {
+  final SpecieModel specieModel;
 
-  const CharacterDetailsWidget({required this.characterModel, Key? key})
+  const SpecieDetailsWidget({required this.specieModel, Key? key})
       : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Hero(
-                      tag: '${characterModel.name} img',
+                      tag: '${specieModel.name} img',
                       child: ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(10)),
@@ -39,7 +39,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                                   const BorderRadius.all(Radius.circular(10)),
                               border: Border.all(width: 1, color: Colors.blue)),
                           child: const Icon(
-                            Icons.person,
+                            Icons.adb,
                             size: 100,
                             color: Colors.blue,
                           ),
@@ -48,7 +48,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text(characterModel.name,
+                    child: Text(specieModel.name,
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -59,7 +59,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Birth Year: ${characterModel.birthYear}',
+                    child: Text('Classification: ${specieModel.classification}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -70,7 +70,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Height: ${characterModel.height}',
+                    child: Text('Designation: ${specieModel.designation}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -81,7 +81,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Mass: ${characterModel.mass}',
+                    child: Text('Average Height: ${specieModel.averageHeight}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -92,7 +92,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Hair Color: ${characterModel.hairColor}',
+                    child: Text('Hair Colors: ${specieModel.hairColors}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -103,7 +103,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Skin Color: ${characterModel.skinColor}',
+                    child: Text('Skin Colors: ${specieModel.skinColors}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -114,7 +114,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Eye Color: ${characterModel.eyeColor}',
+                    child: Text('Eye Colors: ${specieModel.eyeColors}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -125,7 +125,19 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Gender: ${characterModel.gender}',
+                    child: Text(
+                        'Average Lifespan: ${specieModel.averageLifespan}',
+                        textAlign: TextAlign.start,
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontStyle: FontStyle.normal),
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
+                    child: Text('Language: ${specieModel.language}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,

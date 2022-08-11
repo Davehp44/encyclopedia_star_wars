@@ -4,7 +4,7 @@ import 'package:encyclopedia_star_wars/models/starship_model.dart';
 import 'package:encyclopedia_star_wars/models/vehicle_model.dart';
 
 class CharacterModel {
-  final String id;
+  String id;
   final String name;
   final String height;
   final String mass;
@@ -61,10 +61,10 @@ class CharacterModel {
       'birth_year': birthYear,
       'gender': gender,
       'homeworld': homeWorld,
-      'films': films,
-      'species': species,
-      'vehicles': vehicles,
-      'starships': starships,
+      // 'films': films,
+      // 'species': species,
+      // 'vehicles': vehicles,
+      // 'starships': starships,
       'created': created,
       'edited': edited,
       'url': url,

@@ -1,11 +1,11 @@
 import 'package:encyclopedia_star_wars/constants/stringValues.dart';
-import 'package:encyclopedia_star_wars/models/character_model.dart';
+import 'package:encyclopedia_star_wars/models/vehicle_model.dart';
 import 'package:flutter/material.dart';
 
-class CharacterDetailsWidget extends StatelessWidget {
-  final CharacterModel characterModel;
+class VehicleDetailsWidget extends StatelessWidget {
+  final VehiclesModel vehiclesModel;
 
-  const CharacterDetailsWidget({required this.characterModel, Key? key})
+  const VehicleDetailsWidget({required this.vehiclesModel, Key? key})
       : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Hero(
-                      tag: '${characterModel.name} img',
+                      tag: '${vehiclesModel.name} img',
                       child: ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(10)),
@@ -39,7 +39,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                                   const BorderRadius.all(Radius.circular(10)),
                               border: Border.all(width: 1, color: Colors.blue)),
                           child: const Icon(
-                            Icons.person,
+                            Icons.car_crash,
                             size: 100,
                             color: Colors.blue,
                           ),
@@ -48,7 +48,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text(characterModel.name,
+                    child: Text(vehiclesModel.name,
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -59,7 +59,20 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Birth Year: ${characterModel.birthYear}',
+                    child: Text('Manufacturer: ${vehiclesModel.manufacturer}',
+                        textAlign: TextAlign.start,
+                        maxLines: 2,
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            overflow: TextOverflow.ellipsis,
+                            fontStyle: FontStyle.normal),
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
+                    child: Text('Model: ${vehiclesModel.model}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -70,7 +83,8 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Height: ${characterModel.height}',
+                    child: Text(
+                        'Cost In Credits: ${vehiclesModel.costInCredits}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -81,7 +95,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Mass: ${characterModel.mass}',
+                    child: Text('Length: ${vehiclesModel.length}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -92,7 +106,8 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Hair Color: ${characterModel.hairColor}',
+                    child: Text(
+                        'Max Atmosphering Speed: ${vehiclesModel.maxAtmospheringSpeed}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -103,7 +118,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Skin Color: ${characterModel.skinColor}',
+                    child: Text('Crew: ${vehiclesModel.crew}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -114,7 +129,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Eye Color: ${characterModel.eyeColor}',
+                    child: Text('Passengers: ${vehiclesModel.passengers}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -125,7 +140,30 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Gender: ${characterModel.gender}',
+                    child: Text(
+                        'Cargo Capacity: ${vehiclesModel.cargoCapacity}',
+                        textAlign: TextAlign.start,
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontStyle: FontStyle.normal),
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
+                    child: Text('Consumables: ${vehiclesModel.consumables}',
+                        textAlign: TextAlign.start,
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontStyle: FontStyle.normal),
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
+                    child: Text('Vehicle Class: ${vehiclesModel.vehicleClass}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,

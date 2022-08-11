@@ -1,5 +1,5 @@
 class PlanetModel {
-  final String id;
+  String id;
   final String name;
   final String rotationPeriod;
   final String orbitalPeriod;
@@ -44,8 +44,8 @@ class PlanetModel {
       'terrain': terrain,
       'surface_water': surfaceWater,
       'population': population,
-      'residents': residents,
-      'films': films,
+      // 'residents': residents,
+      // 'films': films,
       'created': created,
       'edited': edited,
       'url': url,

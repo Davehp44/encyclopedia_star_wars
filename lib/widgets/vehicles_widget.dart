@@ -1,9 +1,7 @@
-import 'dart:convert';
-
-import 'package:encyclopedia_star_wars/models/request_model.dart';
+import 'package:encyclopedia_star_wars/constants/constants.dart';
 import 'package:encyclopedia_star_wars/models/vehicle_model.dart';
+import 'package:encyclopedia_star_wars/screen_widgets/vehicle_details_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class VehiclesWidget extends StatefulWidget {
   const VehiclesWidget({Key? key}) : super(key: key);
@@ -15,38 +13,27 @@ class VehiclesWidget extends StatefulWidget {
 }
 
 class StateVehiclesWidget extends State<VehiclesWidget> {
-  late Future<RequestModel> futurePlanets;
   List<VehiclesModel> listCharacterModel = [];
-  ValueNotifier<String> next = ValueNotifier("");
-  ValueNotifier<String> previous = ValueNotifier("");
+  ValueNotifier<int> next = ValueNotifier(0);
+  ValueNotifier<int> previous = ValueNotifier(0);
+  int totalVehicles = 0;
 
   @override
   void initState() {
     super.initState();
-    futurePlanets =
-        fetchCharacterListRequestModel('https://swapi.dev/api/vehicles/');
-  }
-
-  Future<RequestModel> fetchCharacterListRequestModel(String url) async {
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      var characterListRequestModel =
-          RequestModel.fromJson(jsonDecode(response.body));
-      if (characterListRequestModel.next != null) {
-        next.value = characterListRequestModel.next!;
-      } else {
-        next.value = "";
-      }
-      if (characterListRequestModel.previous != null) {
-        previous.value = characterListRequestModel.previous!;
-      } else {
-        previous.value = "";
-      }
-      return characterListRequestModel;
-    } else {
-      throw Exception('Failed to load characters');
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await dbHelper.countVehicles(totalVehicles).then((value) async {
+        if (value > 0) {
+          totalVehicles = value;
+          await dbHelper.getVehicles(valorFactor, 0).then((value) {
+            next.value += valorFactor;
+            listCharacterModel.clear;
+            listCharacterModel.addAll(value);
+          });
+          setState(() {});
+        }
+      });
+    });
   }
 
   @override
@@ -54,24 +41,72 @@ class StateVehiclesWidget extends State<VehiclesWidget> {
     return Stack(
       children: [
         Center(
-          child: FutureBuilder<RequestModel>(
-            future: futurePlanets,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                listCharacterModel.clear();
-                for (var element in snapshot.data!.results) {
-                  listCharacterModel.add(VehiclesModel.fromJson(element));
-                }
-                return ListView.builder(
-                  itemBuilder: (context, index) => Text(
-                      '${listCharacterModel[index].name}\n        ${listCharacterModel[index].manufacturer}'),
-                  itemCount: listCharacterModel.length,
-                );
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-              return const CircularProgressIndicator();
-            },
+          child: ListView.builder(
+            itemBuilder: (context, index) => Container(
+              padding: const EdgeInsets.all(15),
+              child: GestureDetector(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.white.withOpacity(0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Hero(
+                          tag: '${listCharacterModel[index].name} img',
+                          child: ClipRRect(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            child: Container(
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10)),
+                                  border:
+                                      Border.all(width: 1, color: Colors.blue)),
+                              child: const Icon(
+                                Icons.car_crash,
+                                size: 60,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          )),
+                      Expanded(
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                                left: 10, right: 15, top: 2),
+                            child: Text(
+                                'Name: ${listCharacterModel[index].name}',
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 25, top: 2),
+                            child: Text(
+                              'Manufacturer: ${listCharacterModel[index].manufacturer}',
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: true,
+                              maxLines: 1,
+                            ),
+                          )
+                        ],
+                      ))
+                    ],
+                  ),
+                ),
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => VehicleDetailsWidget(
+                          vehiclesModel: listCharacterModel[index]),
+                    )),
+              ),
+            ),
+            itemCount: listCharacterModel.length,
           ),
         ),
         Positioned(
@@ -85,14 +120,21 @@ class StateVehiclesWidget extends State<VehiclesWidget> {
               ValueListenableBuilder(
                 valueListenable: previous,
                 builder: (context, value, child) => IconButton(
-                    onPressed: () {
-                      if (previous.value.isNotEmpty) {
-                        futurePlanets =
-                            fetchCharacterListRequestModel(previous.value);
-                        setState(() {});
+                    onPressed: () async {
+                      if (previous.value >= valorFactor) {
+                        await dbHelper
+                            .getVehicles(
+                                valorFactor, previous.value - valorFactor)
+                            .then((value) {
+                          next.value -= valorFactor;
+                          previous.value -= valorFactor;
+                          listCharacterModel.clear();
+                          listCharacterModel.addAll(value);
+                          setState(() {});
+                        });
                       }
                     },
-                    icon: previous.value.isNotEmpty
+                    icon: previous.value >= valorFactor
                         ? const Icon(
                             Icons.arrow_circle_up,
                             color: Colors.blue,
@@ -119,16 +161,20 @@ class StateVehiclesWidget extends State<VehiclesWidget> {
               ValueListenableBuilder(
                 valueListenable: next,
                 builder: (context, value, child) => IconButton(
-                    onPressed: () {
-                      if (next.value.isNotEmpty) {
-                        futurePlanets =
-                            fetchCharacterListRequestModel(next.value);
-                        setState(() {});
+                    onPressed: () async {
+                      if (previous.value + valorFactor < totalVehicles) {
+                        await dbHelper
+                            .getVehicles(valorFactor, next.value)
+                            .then((value) {
+                          next.value += valorFactor;
+                          previous.value += valorFactor;
+                          listCharacterModel.clear();
+                          listCharacterModel.addAll(value);
+                          setState(() {});
+                        });
                       }
                     },
-                    disabledColor:
-                        next.value.isNotEmpty ? Colors.grey : Colors.blue,
-                    icon: next.value.isNotEmpty
+                    icon: previous.value + valorFactor < totalVehicles
                         ? const Icon(
                             Icons.arrow_circle_down,
                             color: Colors.blue,

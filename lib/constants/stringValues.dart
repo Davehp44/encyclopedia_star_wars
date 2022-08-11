@@ -6,3 +6,5 @@ const String planets = "Planets";
 const String species = "Species";
 const String starships = "Starships";
 const String films = "Films";
+const String details = "Details";
+const String syncDatePreferences = "syncDatePreferences";

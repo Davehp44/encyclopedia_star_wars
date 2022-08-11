@@ -1,11 +1,11 @@
 import 'package:encyclopedia_star_wars/constants/stringValues.dart';
-import 'package:encyclopedia_star_wars/models/character_model.dart';
+import 'package:encyclopedia_star_wars/models/planet_model.dart';
 import 'package:flutter/material.dart';
 
-class CharacterDetailsWidget extends StatelessWidget {
-  final CharacterModel characterModel;
+class PlanetDetailsWidget extends StatelessWidget {
+  final PlanetModel planetModel;
 
-  const CharacterDetailsWidget({required this.characterModel, Key? key})
+  const PlanetDetailsWidget({required this.planetModel, Key? key})
       : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Hero(
-                      tag: '${characterModel.name} img',
+                      tag: '${planetModel.name} img',
                       child: ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(10)),
@@ -39,7 +39,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                                   const BorderRadius.all(Radius.circular(10)),
                               border: Border.all(width: 1, color: Colors.blue)),
                           child: const Icon(
-                            Icons.person,
+                            Icons.language,
                             size: 100,
                             color: Colors.blue,
                           ),
@@ -48,7 +48,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text(characterModel.name,
+                    child: Text(planetModel.name,
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -59,7 +59,21 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Birth Year: ${characterModel.birthYear}',
+                    child: Text('Terrain: ${planetModel.terrain}',
+                        textAlign: TextAlign.start,
+                        maxLines: 2,
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            overflow: TextOverflow.ellipsis,
+                            fontStyle: FontStyle.normal),
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
+                    child: Text(
+                        'Rotation Period: ${planetModel.rotationPeriod}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -70,7 +84,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Height: ${characterModel.height}',
+                    child: Text('Diameter: ${planetModel.diameter}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -81,7 +95,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Mass: ${characterModel.mass}',
+                    child: Text('gravity: ${planetModel.gravity}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -92,7 +106,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Hair Color: ${characterModel.hairColor}',
+                    child: Text('Climate: ${planetModel.climate}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -103,7 +117,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Skin Color: ${characterModel.skinColor}',
+                    child: Text('Surface Water: ${planetModel.surfaceWater}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,
@@ -114,18 +128,7 @@ class CharacterDetailsWidget extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Eye Color: ${characterModel.eyeColor}',
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontStyle: FontStyle.normal),
-                        overflow: TextOverflow.ellipsis),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.only(left: 10, right: 15, top: 2),
-                    child: Text('Gender: ${characterModel.gender}',
+                    child: Text('Population: ${planetModel.population}',
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             color: Colors.black,

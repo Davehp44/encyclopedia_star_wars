@@ -1,5 +1,5 @@
 class VehiclesModel {
-  final String id;
+  String id;
   final String name;
   final String model;
   final String manufacturer;
@@ -50,8 +50,8 @@ class VehiclesModel {
       'cargo_capacity': cargoCapacity,
       'consumables': consumables,
       'vehicle_class': vehicleClass,
-      'pilots': pilots,
-      'films': films,
+      // 'pilots': pilots,
+      // 'films': films,
       'created': created,
       'edited': edited,
       'url': url,

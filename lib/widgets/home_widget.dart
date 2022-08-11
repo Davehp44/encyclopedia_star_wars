@@ -3,6 +3,7 @@ import 'package:encyclopedia_star_wars/constants/stringValues.dart';
 import 'package:encyclopedia_star_wars/widgets/characters_widget.dart';
 import 'package:encyclopedia_star_wars/widgets/custom_animated_bottom_bar.dart';
 import 'package:encyclopedia_star_wars/widgets/films_widget.dart';
+import 'package:encyclopedia_star_wars/widgets/loading_view_widget.dart';
 import 'package:encyclopedia_star_wars/widgets/planets_widget.dart';
 import 'package:encyclopedia_star_wars/widgets/species_widget.dart';
 import 'package:encyclopedia_star_wars/widgets/startship_widget.dart';
@@ -96,15 +97,14 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        bottom: false,
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            title: ValueListenableBuilder(
-              valueListenable: stateApp,
-              builder: (context, value, child) =>
-                  Text(stateApp.value == StateApp.characters
+    return ValueListenableBuilder(
+      valueListenable: stateApp,
+      builder: (context, value, child) => Scaffold(
+        backgroundColor: Colors.white,
+        appBar: stateApp.value != StateApp.loading
+            ? AppBar(
+                title: Text(
+                  stateApp.value == StateApp.characters
                       ? characters
                       : stateApp.value == StateApp.vehicles
                           ? vehicles
@@ -116,24 +116,28 @@ class _HomeWidgetState extends State<HomeWidget> {
                                       ? starships
                                       : stateApp.value == StateApp.films
                                           ? films
-                                          : ""),
-            ),
-          ),
-          bottomNavigationBar: _buildBottomBar(),
-          body: stateApp.value == StateApp.characters
-              ? charactersWidget
-              : stateApp.value == StateApp.vehicles
-                  ? const VehiclesWidget()
-                  : stateApp.value == StateApp.planets
-                      ? const PlanetWidget()
-                      : stateApp.value == StateApp.species
-                          ? const SpeciesWidget()
-                          : stateApp.value == StateApp.starships
-                              ? const StarShipsWidget()
-                              : stateApp.value == StateApp.films
-                                  ? const FilmsWidget()
-                                  : Container(),
-        ));
+                                          : "",
+                ),
+                centerTitle: true,
+              )
+            : null,
+        bottomNavigationBar:
+            stateApp.value != StateApp.loading ? _buildBottomBar() : null,
+        body: stateApp.value == StateApp.characters
+            ? charactersWidget
+            : stateApp.value == StateApp.vehicles
+                ? const VehiclesWidget()
+                : stateApp.value == StateApp.planets
+                    ? const PlanetWidget()
+                    : stateApp.value == StateApp.species
+                        ? const SpeciesWidget()
+                        : stateApp.value == StateApp.starships
+                            ? const StarShipsWidget()
+                            : stateApp.value == StateApp.films
+                                ? const FilmsWidget()
+                                : const LoadingViewWidget(),
+      ),
+    );
   }
 
   final _inactiveColor = Colors.grey;

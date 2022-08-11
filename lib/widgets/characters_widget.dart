@@ -1,10 +1,7 @@
-import 'dart:convert';
-
+import 'package:encyclopedia_star_wars/constants/constants.dart';
 import 'package:encyclopedia_star_wars/models/character_model.dart';
-import 'package:encyclopedia_star_wars/models/request_model.dart';
 import 'package:encyclopedia_star_wars/screen_widgets/character_details_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class CharactersWidget extends StatefulWidget {
   const CharactersWidget({Key? key}) : super(key: key);
@@ -16,38 +13,27 @@ class CharactersWidget extends StatefulWidget {
 }
 
 class StateCharactersWidget extends State<CharactersWidget> {
-  late Future<RequestModel> futureCharacters;
   List<CharacterModel> listCharacterModel = [];
-  ValueNotifier<String> next = ValueNotifier("");
-  ValueNotifier<String> previous = ValueNotifier("");
+  ValueNotifier<int> next = ValueNotifier(0);
+  ValueNotifier<int> previous = ValueNotifier(0);
+  int totalCharacters = 0;
 
   @override
   void initState() {
     super.initState();
-    futureCharacters =
-        fetchCharacterListRequestModel('https://swapi.dev/api/people/');
-  }
-
-  Future<RequestModel> fetchCharacterListRequestModel(String url) async {
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      var characterListRequestModel =
-          RequestModel.fromJson(jsonDecode(response.body));
-      if (characterListRequestModel.next != null) {
-        next.value = characterListRequestModel.next!;
-      } else {
-        next.value = "";
-      }
-      if (characterListRequestModel.previous != null) {
-        previous.value = characterListRequestModel.previous!;
-      } else {
-        previous.value = "";
-      }
-      return characterListRequestModel;
-    } else {
-      throw Exception('Failed to load characters');
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await dbHelper.countCharacters(totalCharacters).then((value) async {
+        if (value > 0) {
+          totalCharacters = value;
+          await dbHelper.getCharacters(valorFactor, 0).then((value) {
+            next.value += valorFactor;
+            listCharacterModel.clear;
+            listCharacterModel.addAll(value);
+          });
+          setState(() {});
+        }
+      });
+    });
   }
 
   @override
@@ -55,82 +41,68 @@ class StateCharactersWidget extends State<CharactersWidget> {
     return Stack(
       children: [
         Center(
-          child: FutureBuilder<RequestModel>(
-            future: futureCharacters,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                listCharacterModel.clear();
-                for (var element in snapshot.data!.results) {
-                  listCharacterModel.add(CharacterModel.fromJson(element));
-                }
-                return ListView.builder(
-                  itemBuilder: (context, index) => Container(
-                    padding: const EdgeInsets.all(15),
-                    child: GestureDetector(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.white.withOpacity(0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Hero(
-                                tag: '${listCharacterModel[index].name} img',
-                                child: ClipRRect(
+          child: ListView.builder(
+            itemBuilder: (context, index) => Container(
+              padding: const EdgeInsets.all(15),
+              child: GestureDetector(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.white.withOpacity(0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Hero(
+                          tag: '${listCharacterModel[index].name} img',
+                          child: ClipRRect(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            child: Container(
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(10)),
-                                  child: Container(
-                                    height: 60,
-                                    width: 60,
-                                    decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10)),
-                                        border: Border.all(
-                                            width: 1, color: Colors.blue)),
-                                    child: const Icon(
-                                      Icons.person,
-                                      size: 60,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                )),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 10, right: 15, top: 2),
-                                  child: Text(
-                                      'Name: ${listCharacterModel[index].name}',
-                                      overflow: TextOverflow.ellipsis),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 10, right: 15, top: 2),
-                                  child: Text(
-                                      'Birth Year: ${listCharacterModel[index].birthYear}',
-                                      overflow: TextOverflow.ellipsis),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CharacterDetailsWidget(
-                                characterModel: listCharacterModel[index]),
+                                  border:
+                                      Border.all(width: 1, color: Colors.blue)),
+                              child: const Icon(
+                                Icons.person,
+                                size: 60,
+                                color: Colors.blue,
+                              ),
+                            ),
                           )),
-                    ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                                left: 10, right: 15, top: 2),
+                            child: Text(
+                                'Name: ${listCharacterModel[index].name}',
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(
+                                left: 10, right: 15, top: 2),
+                            child: Text(
+                                'Birth Year: ${listCharacterModel[index].birthYear}',
+                                overflow: TextOverflow.ellipsis),
+                          )
+                        ],
+                      )
+                    ],
                   ),
-                  itemCount: listCharacterModel.length,
-                );
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-              return const CircularProgressIndicator();
-            },
+                ),
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CharacterDetailsWidget(
+                          characterModel: listCharacterModel[index]),
+                    )),
+              ),
+            ),
+            itemCount: listCharacterModel.length,
           ),
         ),
         Positioned(
@@ -144,14 +116,21 @@ class StateCharactersWidget extends State<CharactersWidget> {
               ValueListenableBuilder(
                 valueListenable: previous,
                 builder: (context, value, child) => IconButton(
-                    onPressed: () {
-                      if (previous.value.isNotEmpty) {
-                        futureCharacters =
-                            fetchCharacterListRequestModel(previous.value);
-                        setState(() {});
+                    onPressed: () async {
+                      if (previous.value >= valorFactor) {
+                        await dbHelper
+                            .getCharacters(
+                                valorFactor, previous.value - valorFactor)
+                            .then((value) {
+                          next.value -= valorFactor;
+                          previous.value -= valorFactor;
+                          listCharacterModel.clear();
+                          listCharacterModel.addAll(value);
+                          setState(() {});
+                        });
                       }
                     },
-                    icon: previous.value.isNotEmpty
+                    icon: previous.value >= valorFactor
                         ? const Icon(
                             Icons.arrow_circle_up,
                             color: Colors.blue,
@@ -178,16 +157,20 @@ class StateCharactersWidget extends State<CharactersWidget> {
               ValueListenableBuilder(
                 valueListenable: next,
                 builder: (context, value, child) => IconButton(
-                    onPressed: () {
-                      if (next.value.isNotEmpty) {
-                        futureCharacters =
-                            fetchCharacterListRequestModel(next.value);
-                        setState(() {});
+                    onPressed: () async {
+                      if (previous.value + valorFactor < totalCharacters) {
+                        await dbHelper
+                            .getCharacters(valorFactor, next.value)
+                            .then((value) {
+                          next.value += valorFactor;
+                          previous.value += valorFactor;
+                          listCharacterModel.clear();
+                          listCharacterModel.addAll(value);
+                          setState(() {});
+                        });
                       }
                     },
-                    disabledColor:
-                        next.value.isNotEmpty ? Colors.grey : Colors.blue,
-                    icon: next.value.isNotEmpty
+                    icon: previous.value + valorFactor < totalCharacters
                         ? const Icon(
                             Icons.arrow_circle_down,
                             color: Colors.blue,

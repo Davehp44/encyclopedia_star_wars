@@ -1,5 +1,5 @@
 class SpecieModel {
-  final String id;
+  String id;
   final String name;
   final String classification;
   final String designation;
@@ -47,8 +47,8 @@ class SpecieModel {
       'average_lifespan': averageLifespan,
       'homeworld': homeWorld,
       'language': language,
-      'people': people,
-      'films': films,
+      // 'people': people,
+      // 'films': films,
       'created': created,
       'edited': edited,
       'url': url,
